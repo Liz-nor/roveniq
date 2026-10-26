@@ -1,0 +1,101 @@
+@import 'tailwindcss';
+
+/* Fonts */
+@theme inline {
+  --font-playfair: 'Playfair Display', serif;
+  --font-manrope: 'Manrope', sans-serif;
+}
+
+@theme {
+  /* Primary - Teal */
+  --color-teal-50: #f0f7f6;
+  --color-teal-100: #dcece9;
+  --color-teal-200: #bedbd5;
+  --color-teal-300: #96c4bc;
+  --color-teal-400: #6fa79f;
+  --color-teal-500: #4d8884;
+  --color-teal-600: #315c60;
+  --color-teal-700: #294e51;
+  --color-teal-800: #203f43;
+  --color-teal-900: #1b3336;
+
+  /* Secondary - Sage */
+  --color-sage-50: #f5f8f3;
+  --color-sage-100: #e8f0e7;
+  --color-sage-200: #d5e3d7;
+  --color-sage-300: #b8cfbc;
+  --color-sage-400: #a6bfaf;
+  --color-sage-500: #83a18e;
+  --color-sage-600: #668572;
+  --color-sage-700: #4e6959;
+  --color-sage-800: #395044;
+  --color-sage-900: #293b31;
+
+  /* Accent - Terracotta */
+  --color-terracotta-50: #fff5f0;
+  --color-terracotta-100: #fce8dc;
+  --color-terracotta-200: #f5ceb9;
+  --color-terracotta-300: #ecaf91;
+  --color-terracotta-400: #db9275;
+  --color-terracotta-500: #c87959;
+  --color-terracotta-600: #ae6045;
+  --color-terracotta-700: #8e4a37;
+  --color-terracotta-800: #713b2f;
+  --color-terracotta-900: #573027;
+
+  /* Highlight - Gold */
+  --color-gold-50: #fbf8eb;
+  --color-gold-100: #f5edce;
+  --color-gold-200: #e9d99d;
+  --color-gold-300: #d9c075;
+  --color-gold-400: #c8a75b;
+  --color-gold-500: #b28c42;
+  --color-gold-600: #916d32;
+  --color-gold-700: #725429;
+  --color-gold-800: #5a4325;
+  --color-gold-900: #48371f;
+
+  /* Neutrals - Stone */
+  --color-stone-50: #faf9f6;
+  --color-stone-100: #f2f0eb;
+  --color-stone-200: #e5e1d9;
+  --color-stone-300: #d1cac0;
+  --color-stone-400: #b4aa9d;
+  --color-stone-500: #94897b;
+  --color-stone-600: #756c61;
+  --color-stone-700: #5b544c;
+  --color-stone-800: #413d37;
+  --color-stone-900: #292722;
+
+  /* Error - Red */
+  --color-error-bg: #fbecec;
+  --color-error-border: #e989b9;
+  --color-error-text: #b42e2e;
+
+  /* Success - Green */
+  --color-success-bg: #eaf5ee;
+  --color-success-border: #acd4bc;
+  --color-success-text: #245c42;
+
+  /* Warning - Yellow */
+  --color-warning-bg: #fff3dc;
+  --color-warning-border: #e8cc91;
+  --color-warning-text: #785017;
+
+  /* Info - Blue */
+  --color-info-bg: #eaf3f8;
+  --color-info-border: #b2d2e0;
+  --color-info-text: #28566d;
+}
+
+@theme inline {
+  --color-background: var(--color-stone-50);
+  --color-text: var(--color-stone-900);
+  --color-primary: var(--color-teal-500);
+  --color-secondary: var(--color-sage-500);
+  --color-accent: var(--color-terracotta-500);
+  --color-error: var(--color-error-text);
+  --color-success: var(--color-success-text);
+  --color-warning: var(--color-warning-text);
+  --color-info: var(--color-info-text);
+}
