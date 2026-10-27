@@ -1,15 +1,11 @@
-import { useState } from 'react';
+import { createRootRoute, createRouter, RouterProvider } from '@tanstack/react-router';
 import './App.css';
-import LoginPage from './pages/login/page';
+
+const rootRoute = createRootRoute();
+const router = createRouter({ routeTree: rootRoute });
 
 function App() {
-  const [count, setCount] = useState(0);
-
-  return (
-    <div className="App">
-      <LoginPage />
-    </div>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

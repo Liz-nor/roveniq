@@ -44,28 +44,28 @@
   --color-terracotta-900: #573027;
 
   /* Highlight - Gold */
-  --color-gold-50: #fbf8eb;
-  --color-gold-100: #f5edce;
-  --color-gold-200: #e9d99d;
-  --color-gold-300: #d9c075;
-  --color-gold-400: #c8a75b;
-  --color-gold-500: #b28c42;
-  --color-gold-600: #916d32;
-  --color-gold-700: #725429;
-  --color-gold-800: #5a4325;
-  --color-gold-900: #48371f;
+  --color-highlight-50: #fbf8eb;
+  --color-highlight-100: #f5edce;
+  --color-highlight-200: #e9d99d;
+  --color-highlight-300: #d9c075;
+  --color-highlight-400: #c8a75b;
+  --color-highlight-500: #b28c42;
+  --color-highlight-600: #916d32;
+  --color-highlight-700: #725429;
+  --color-highlight-800: #5a4325;
+  --color-highlight-900: #48371f;
 
   /* Neutrals - Stone */
-  --color-stone-50: #faf9f6;
-  --color-stone-100: #f2f0eb;
-  --color-stone-200: #e5e1d9;
-  --color-stone-300: #d1cac0;
-  --color-stone-400: #b4aa9d;
-  --color-stone-500: #94897b;
-  --color-stone-600: #756c61;
-  --color-stone-700: #5b544c;
-  --color-stone-800: #413d37;
-  --color-stone-900: #292722;
+  --color-neutral-50: #faf9f6;
+  --color-neutral-100: #f2f0eb;
+  --color-neutral-200: #e5e1d9;
+  --color-neutral-300: #d1cac0;
+  --color-neutral-400: #b4aa9d;
+  --color-neutral-500: #94897b;
+  --color-neutral-600: #756c61;
+  --color-neutral-700: #5b544c;
+  --color-neutral-800: #413d37;
+  --color-neutral-900: #292722;
 
   /* Error - Red */
   --color-error-bg: #fbecec;
@@ -89,8 +89,8 @@
 }
 
 @theme inline {
-  --color-background: var(--color-stone-50);
-  --color-text: var(--color-stone-900);
+  --color-background: var(--color-neutral-50);
+  --color-text: var(--color-neutral-900);
   --color-primary: var(--color-teal-500);
   --color-secondary: var(--color-sage-500);
   --color-accent: var(--color-terracotta-500);
