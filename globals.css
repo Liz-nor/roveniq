@@ -6,6 +6,11 @@
   --font-manrope: 'Manrope', sans-serif;
 }
 
+main {
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
 h1,
 h2 {
   font-family: var(--font-playfair);
@@ -104,12 +109,16 @@ input {
   --color-info-bg: #eaf3f8;
   --color-info-border: #b2d2e0;
   --color-info-text: #28566d;
+
+  /* Other - Miscellaneous */
+  --color-background: #f5f7f5;
+  --color-muted-background: #dfe8e4;
 }
 
 @theme inline {
-  --color-background: var(--color-neutral-50);
-  --color-button-primary: var(--color-teal-500);
-  --color-button-primary-hover: var(--color-teal-600);
+  --color-background: var(--color-background);
+  --color-button-primary: var(--color-teal-700);
+  --color-button-primary-hover: var(--color-teal-500);
   --color-button-secondary: var(--color-neutral-500);
   --color-button-secondary-hover: var(--color-neutral-600);
   --color-button-secondary-text: var(--color-neutral-50);

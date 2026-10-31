@@ -18,9 +18,9 @@ export default function AuthLayout() {
           }`}
         >
           <img
-            src="/images/suitcase.png"
-            alt="Suitcase on an airport"
-            className="h-full w-full object-cover opacity-80"
+            src="/images/roveniq-login-register.webp"
+            alt="Lounge area in the sunset"
+            className="h-full w-full object-cover object-left opacity-75"
           />
 
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/25">
@@ -28,7 +28,12 @@ export default function AuthLayout() {
               roveniq<span className="text-terracotta-500">.</span>
             </h1>
             <p className="text-heading">Find your somewhere.</p>
-
+            <p className={`text-heading m-4 ${isRegister ? 'hidden' : ''}`}>
+              No account yet?
+            </p>
+            <p className={`text-heading m-4 ${!isRegister ? 'hidden' : ''}`}>
+              Already have an account?
+            </p>
             <Link
               to={isRegister ? '/login' : '/register'}
               className="m-4 buttonSecondary"
