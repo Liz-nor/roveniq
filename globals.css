@@ -6,27 +6,29 @@
   --font-manrope: 'Manrope', sans-serif;
 }
 
-main {
-  background-color: var(--color-background);
-  color: var(--color-text);
-}
+@layer base {
+  main {
+    background-color: var(--color-background);
+    color: var(--color-text);
+  }
 
-h1,
-h2 {
-  font-family: var(--font-playfair);
-  font-weight: semi-bold;
-  font-size: 2rem;
-}
+  h1,
+  h2 {
+    font-family: var(--font-playfair);
+    font-weight: 600;
+    font-size: 2rem;
+  }
 
-h3 {
-  font-family: var(--font-playfair);
-  font-weight: medium;
-}
+  h3 {
+    font-family: var(--font-playfair);
+    font-weight: 500;
+  }
 
-p,
-input {
-  font-family: var(--font-manrope);
-  font-weight: normal;
+  p,
+  input {
+    font-family: var(--font-manrope);
+    font-weight: normal;
+  }
 }
 
 @theme {
@@ -139,6 +141,7 @@ input {
   color: var(--color-button-primary-text);
   border: none;
   padding: 0.5rem 1rem;
+  margin: 0.5rem 0;
   border-radius: 0.25rem;
   cursor: pointer;
   transition: background-color 0.3s ease;

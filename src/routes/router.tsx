@@ -7,9 +7,22 @@ import {
 } from '@tanstack/react-router';
 
 import AuthLayout from '../components/layout/AuthLayout';
+import Header from '../components/layout/Header';
+import Home from '../pages/home/page';
 
 const rootRoute = createRootRoute({
-  component: () => <Outlet />,
+  component: () => (
+    <>
+      <Header />
+      <Outlet />
+    </>
+  ),
+});
+
+const homeRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/home',
+  component: Home,
 });
 
 const indexRoute = createRoute({
@@ -40,6 +53,7 @@ const registerRoute = createRoute({
 export const router = createRouter({
   routeTree: rootRoute.addChildren([
     indexRoute,
+    homeRoute,
     authRoute.addChildren([loginRoute, registerRoute]),
   ]),
 });
