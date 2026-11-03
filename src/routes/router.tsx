@@ -9,6 +9,7 @@ import {
 import AuthLayout from '../components/layout/AuthLayout';
 import Header from '../components/layout/Header';
 import Home from '../pages/home/page';
+import VenuePage from '../pages/venue/page';
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -23,6 +24,12 @@ const homeRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/home',
   component: Home,
+});
+
+const venueRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/venues/$venueId',
+  component: VenuePage,
 });
 
 const indexRoute = createRoute({
@@ -54,6 +61,7 @@ export const router = createRouter({
   routeTree: rootRoute.addChildren([
     indexRoute,
     homeRoute,
+    venueRoute,
     authRoute.addChildren([loginRoute, registerRoute]),
   ]),
 });
