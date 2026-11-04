@@ -10,6 +10,7 @@ import AuthLayout from '../components/layout/AuthLayout';
 import Header from '../components/layout/Header';
 import Home from '../pages/home/page';
 import VenuesPage from '../pages/venues/page';
+import VenuePage from '../pages/venue/page';
 import ProfilePage from '../pages/profile/page';
 import { useAuthStore } from '../lib/authStore';
 
