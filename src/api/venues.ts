@@ -36,3 +36,15 @@ export async function getVenues(): Promise<Venue[]> {
     const json = await response.json();
     return json.data;
 }
+
+export async function getVenue(id: string): Promise<Venue> {
+    const response = await fetch(
+        `${BASE_URL}/venues/${id}`
+    );
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch venue');
+    }
+    const json = await response.json();
+    return json.data;
+}
