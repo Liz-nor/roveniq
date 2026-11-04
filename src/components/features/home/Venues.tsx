@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react';
 import { Star, MapPin, UsersRound, Wifi, Heart, PawPrint, Car, Utensils } from 'lucide-react';
 import { getVenues, type Venue } from '../../../api/venues';
+import { filterVenues, hasActiveFilters, type SearchFilters } from '../../../lib/venueFilters';
+import Pagination from '../../ui/Pagination';
+
+const VENUES_PER_PAGE = 11;
 
 function formatLocation(location: Venue['location']) {
     const parts = [location.city, location.country].filter(Boolean);
     return parts.length > 0 ? parts.join(', ') : 'Location not specified';
 }
 
-function VenueCard({ venue }: { venue: Venue }) {
+export function VenueCard({ venue }: { venue: Venue }) {
     const image = venue.media[0];
 
     return (
@@ -16,6 +20,7 @@ function VenueCard({ venue }: { venue: Venue }) {
                 src={image?.url ?? '/images/1.png'}
                 alt={image?.alt || venue.name}
                 className="w-full h-48 object-cover rounded mb-4"
+                onClick={() => window.location.href = `/venues/${venue.id}`}
             />
             <button
                 type="button"
@@ -50,7 +55,7 @@ function VenueCard({ venue }: { venue: Venue }) {
             </div>
             <div className="flex justify-between items-center mt-4">
                 <p className="text-lg font-semibold text-neutral-900">${venue.price} / night</p>
-                <button className="buttonPrimary">
+                <button className="buttonPrimary whitespace-nowrap shrink-0">
                     Book Now
                 </button>
             </div>
@@ -58,10 +63,12 @@ function VenueCard({ venue }: { venue: Venue }) {
     );
 }
 
-export default function ShowcaseVenues() {
+export default function ShowcaseVenues({ filters }: { filters: SearchFilters }) {
     const [venues, setVenues] = useState<Venue[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [page, setPage] = useState(1);
+    const [searchedFilters, setSearchedFilters] = useState(filters);
 
     useEffect(() => {
         getVenues()
@@ -70,17 +77,39 @@ export default function ShowcaseVenues() {
             .finally(() => setIsLoading(false));
     }, []);
 
+    // A new search starts again from page 1
+    if (filters !== searchedFilters) {
+        setSearchedFilters(filters);
+        setPage(1);
+    }
+
+    const isSearching = hasActiveFilters(filters);
+    const matchingVenues = isSearching ? filterVenues(venues, filters) : venues;
+    const totalPages = Math.ceil(matchingVenues.length / VENUES_PER_PAGE);
+    const shownVenues = matchingVenues.slice((page - 1) * VENUES_PER_PAGE, page * VENUES_PER_PAGE);
+
+    function handlePageChange(nextPage: number) {
+        setPage(nextPage);
+        document.getElementById('venues')?.scrollIntoView({ behavior: 'smooth' });
+    }
+
     return (
-        <section className="py-12">
+        <section id="venues" className="py-12 scroll-mt-20">
             <div className="container mx-auto px-4">
-                <h2 className="text-2xl font-bold text-neutral-900 mb-6">Explore Venues</h2>
+                <h2 className="text-2xl font-bold text-neutral-900 mb-6">
+                    {isSearching ? `Search results (${matchingVenues.length})` : 'Explore Venues'}
+                </h2>
                 {isLoading && <p className="text-neutral-700">Loading venues...</p>}
                 {error && <p className="text-red-600">{error}</p>}
+                {isSearching && !isLoading && shownVenues.length === 0 && (
+                    <p className="text-neutral-700">No venues match your search. Try different words or fewer guests.</p>
+                )}
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                    {venues.slice(0, 7).map((venue) => (
+                    {shownVenues.map((venue) => (
                         <VenueCard key={venue.id} venue={venue} />
                     ))}
                 </div>
+                <Pagination currentPage={page} totalPages={totalPages} onPageChange={handlePageChange} />
             </div>
         </section>
     );

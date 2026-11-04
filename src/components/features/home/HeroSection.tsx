@@ -1,5 +1,7 @@
-import { MapPin, Calendar, UsersRound, Search } from "lucide-react";
-export default function HeroSection() {
+import SearchBar from "../../ui/SearchBar";
+import type { SearchFilters } from "../../../lib/venueFilters";
+
+export default function HeroSection({ onSearch }: { onSearch: (filters: SearchFilters) => void }) {
   return (
     <section className="relative flex min-h-[70vh] items-center overflow-hidden">
       <img
@@ -13,37 +15,7 @@ export default function HeroSection() {
         <p className="mt-4 text-lg text-neutral-700">
           From mountain cabins to seaside villas, find the perfect stay for your next adventure.
         </p>
-        <div className="bg-teal-700 h-[52px] w-[770px] mt-6 rounded-[30px] flex items-center justify-center">
-          <div className="flex items-center gap-4 divide-x divide-white">
-            <div className="flex items-center gap-2">
-              <MapPin size={20} className="text-white" />
-              <input
-                type="text"
-                placeholder="Where are you going?"
-                className="bg-transparent text-white placeholder-white focus:outline-none"
-              />
-            </div>
-            <div className="flex items-center gap-2">
-              <Calendar size={20} className="text-white" />
-              <input
-                type="text"
-                placeholder="Check-in → Check-out"
-                className="bg-transparent text-white placeholder-white focus:outline-none"
-              />
-            </div>
-            <div className="flex items-center gap-2">
-              <UsersRound size={20} className="text-white" />
-              <input
-                type="text"
-                placeholder="Guests"
-                className="bg-transparent text-white placeholder-white focus:outline-none"
-              />
-            </div>
-            <button className="bg-teal-900 h-[40px] w-[40px] rounded-full flex items-center justify-center">
-              <Search size={20} className="text-white" />
-            </button>
-          </div>
-        </div>
+        <SearchBar onSearch={onSearch} />
       </div>
     </section>
   );

@@ -9,6 +9,9 @@ import {
 import AuthLayout from '../components/layout/AuthLayout';
 import Header from '../components/layout/Header';
 import Home from '../pages/home/page';
+import VenuesPage from '../pages/venues/page';
+import ProfilePage from '../pages/profile/page';
+import { useAuthStore } from '../lib/authStore';
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -28,11 +31,24 @@ const homeRoute = createRoute({
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
-  beforeLoad: () => {
-    throw redirect({ to: '/login' });
-  },
+  component: VenuesPage,
 });
 
+const venuesRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/venues',
+  component: VenuesPage,
+});
+const profileRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/profile',
+  beforeLoad: () => {
+    if (!useAuthStore.getState().accessToken) {
+      throw redirect({ to: '/login' });
+    }
+  },
+  component: ProfilePage,
+});
 // Shared layout stays mounted between /login and /register so the panel can slide.
 const authRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -45,6 +61,7 @@ const loginRoute = createRoute({
   path: '/login',
 });
 
+
 const registerRoute = createRoute({
   getParentRoute: () => authRoute,
   path: '/register',
@@ -55,5 +72,7 @@ export const router = createRouter({
     indexRoute,
     homeRoute,
     authRoute.addChildren([loginRoute, registerRoute]),
+    venuesRoute,
+    profileRoute,
   ]),
 });
