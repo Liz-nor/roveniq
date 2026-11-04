@@ -106,6 +106,7 @@ export function ProfileDetails({ name, email, onEdit }: ProfileDetailsProps) {
                     <button
                         type="button"
                         onClick={onEdit}
+                        disabled={!onEdit}
                         className="flex items-center gap-2 rounded-md border border-sage-500 bg-sage-100 px-2 py-0.5 text-xs text-neutral-900 transition-colors hover:bg-sage-200"
                     >
                         <SquarePen className="size-4" aria-hidden="true" />
