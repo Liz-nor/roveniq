@@ -65,7 +65,11 @@ export function VenueCard({ venue }: { venue: Venue }) {
             </div>
             <div className="flex justify-between items-center mt-4">
                 <p className="text-lg font-semibold text-neutral-900">${venue.price} / night</p>
-                <button className="buttonPrimary whitespace-nowrap shrink-0">
+                <Link
+                    to="/venues/$venueId"
+                    params={{ venueId: venue.id }}
+                    className="buttonPrimary relative z-10 whitespace-nowrap shrink-0"
+                >
                     Book Now
                 </Link>
             </div>
