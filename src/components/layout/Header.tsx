@@ -1,11 +1,22 @@
-import { Link } from '@tanstack/react-router';
+import { Link, useNavigate } from '@tanstack/react-router';
 import { XIcon } from 'lucide-react';
 import { useState } from 'react';
+import { useAuthStore } from '../../lib/authStore';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const isLoggedIn = useAuthStore((state) => Boolean(state.accessToken));
+  const logout = useAuthStore((state) => state.logout);
+  const navigate = useNavigate();
+
   const closeMenu = () => setIsMenuOpen(false);
+
+  const handleLogout = () => {
+    closeMenu();
+    logout();
+    navigate({ to: '/login' });
+  };
 
   return (
     <header className="w-full bg-muted-background px-4 py-4">
@@ -50,12 +61,27 @@ export default function Header() {
           <p className="text-neutral-900 px-4">
             <Link to={'/venues'}>Venues</Link>
           </p>
-          <p className="text-neutral-900 px-4">
-            <Link to={'/login'}>Login</Link>
-          </p>
-          <p className="text-neutral-900 px-4">
-            <Link to={'/register'}>Register</Link>
-          </p>
+          {isLoggedIn ? (
+            <>
+              <p className="text-neutral-900 px-4">
+                <Link to={'/profile'}>Profile</Link>
+              </p>
+              <p className="text-neutral-900 px-4">
+                <button type="button" onClick={handleLogout}>
+                  Logout
+                </button>
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="text-neutral-900 px-4">
+                <Link to={'/login'}>Login</Link>
+              </p>
+              <p className="text-neutral-900 px-4">
+                <Link to={'/register'}>Register</Link>
+              </p>
+            </>
+          )}
         </div>
       </nav>
 
@@ -70,12 +96,25 @@ export default function Header() {
           <Link to={'/venues'} onClick={closeMenu}>
             Venues
           </Link>
-          <Link to={'/login'} onClick={closeMenu}>
-            Login
-          </Link>
-          <Link to={'/register'} onClick={closeMenu}>
-            Register
-          </Link>
+          {isLoggedIn ? (
+            <>
+              <Link to={'/profile'} onClick={closeMenu}>
+                Profile
+              </Link>
+              <button type="button" onClick={handleLogout} className="text-left">
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to={'/login'} onClick={closeMenu}>
+                Login
+              </Link>
+              <Link to={'/register'} onClick={closeMenu}>
+                Register
+              </Link>
+            </>
+          )}
         </div>
       )}
     </header>
