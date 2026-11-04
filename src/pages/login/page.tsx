@@ -1,9 +1,12 @@
 import ValidatedInput from '../../components/features/ValidatedInput';
 import { emailSchema, passwordSchema } from '../../lib/validation';
 import { FaGoogle, FaFacebook } from 'react-icons/fa';
-import type { ReactNode } from 'react';
+import type { FormEvent, ReactNode } from 'react';
 import { LoaderCircle, Mail, Eye, EyeClosed } from 'lucide-react';
 import { useState } from 'react';
+import { useNavigate } from '@tanstack/react-router';
+import { login } from '../../api/auth';
+import { useAuthStore } from '../../lib/authStore';
 
 interface SocialButtonProps {
   provider: string;
@@ -109,6 +112,39 @@ export function AlternativeAuth({
 
 export default function LoginForm({ active }: { active: boolean }) {
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const setAuth = useAuthStore((state) => state.setAuth);
+  const navigate = useNavigate();
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const email = String(formData.get('email') ?? '');
+    const password = String(formData.get('password') ?? '');
+
+    if (!emailSchema.safeParse(email).success) {
+      setError('Please enter a valid stud.noroff.no email.');
+      return;
+    }
+    if (!passwordSchema.safeParse(password).success) {
+      setError('Password must be at least 8 characters.');
+      return;
+    }
+
+    setError(null);
+    setIsSubmitting(true);
+    try {
+      const { user, accessToken } = await login(email, password);
+      setAuth(user, accessToken);
+      navigate({ to: '/profile' });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to log in');
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
   return (
     <section
       className={`col-start-1 row-start-1 p-10 transition-opacity duration-500 ${
@@ -119,9 +155,11 @@ export default function LoginForm({ active }: { active: boolean }) {
     >
       <h1 className="text-text mb-4">Welcome back</h1>
       <p className="text-text mb-4">Please login to your account</p>
-      <form className="flex flex-col gap-4">
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit} noValidate>
         <ValidatedInput
           type="email"
+          name="email"
+          autoComplete="email"
           placeholder="Email"
           iconPosition="right"
           icon={<Mail className="size-5" aria-hidden="true" />}
@@ -129,6 +167,8 @@ export default function LoginForm({ active }: { active: boolean }) {
         />
         <ValidatedInput
           type={showPassword ? 'text' : 'password'}
+          name="password"
+          autoComplete="current-password"
           placeholder="Password"
           iconPosition="right"
           icon={
@@ -152,7 +192,25 @@ export default function LoginForm({ active }: { active: boolean }) {
         <p className="text-text mb-4 hover:underline cursor-pointer hover:text-terracotta-500">
           Forgot password?
         </p>
-        <button className="buttonPrimary">Login</button>
+        {error && (
+          <p
+            role="alert"
+            className="rounded-lg border border-error-border bg-error-bg p-3 text-sm text-error"
+          >
+            {error}
+          </p>
+        )}
+        <button
+          type="submit"
+          className="buttonPrimary flex items-center justify-center gap-2"
+          disabled={isSubmitting}
+          aria-busy={isSubmitting}
+        >
+          {isSubmitting && (
+            <LoaderCircle className="size-5 animate-spin" aria-hidden="true" />
+          )}
+          Login
+        </button>
       </form>
     </section>
   );
