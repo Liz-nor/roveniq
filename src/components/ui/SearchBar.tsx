@@ -19,10 +19,35 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
         <form
             role="search"
             onSubmit={handleSubmit}
-            className="bg-teal-700 h-[52px] w-full max-w-[770px] mt-6 rounded-[30px] flex items-center justify-center"
+            className="
+            bg-teal-700 
+            w-full 
+            max-w-[770px] 
+            mt-6 
+            p-4
+            rounded-2xl
+            lg:rounded-[30px]
+            lg:p-2"
         >
-            <div className="flex items-center gap-4 divide-x divide-white">
-                <label className="flex items-center gap-2">
+            <div className="
+            flex 
+            w-full
+            flex-col
+            items-center 
+            gap-3
+            lg:flex-row
+            lg:items-center 
+            lg:gap-0 
+            lg:divide-x 
+            lg:divide-white">
+                <label className="
+                flex 
+                min-w-0 
+                items-center 
+                gap-2
+                py-2
+                lg:flex-[2]
+                lg:px-3">
                     <MapPin size={20} className="text-white" />
                     <input
                         type="text"
@@ -30,19 +55,43 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
                         onChange={(e) => setQuery(e.target.value)}
                         placeholder="Where are you going?"
                         aria-label="Destination or keyword"
-                        className="bg-transparent text-white placeholder-white focus:outline-none"
+                        className="
+                        min-w-0 
+                        w-full 
+                        bg-transparent 
+                        text-white 
+                        placeholder-white 
+                        focus:outline-none"
                     />
                 </label>
-                <label className="flex items-center gap-2">
+                <label className="flex 
+                min-w-0 
+                items-center 
+                gap-2
+                py-2
+                lg:flex-[2]
+                lg:px-3">
                     <Calendar size={20} className="text-white" />
                     <input
                         type="text"
                         placeholder="Check-in → Check-out"
                         aria-label="Dates"
-                        className="bg-transparent text-white placeholder-white focus:outline-none"
+                        className="
+                        min-w-0 
+                        w-full 
+                        bg-transparent 
+                        text-white 
+                        placeholder-white 
+                        focus:outline-none"
                     />
                 </label>
-                <label className="flex items-center gap-2">
+                <label className="flex 
+                min-w-0 
+                items-center 
+                gap-2
+                py-2
+                lg:flex-[2]
+                lg:px-3">
                     <UsersRound size={20} className="text-white" />
                     <input
                         type="number"
@@ -51,15 +100,35 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
                         onChange={(e) => setGuests(e.target.value)}
                         placeholder="Guests"
                         aria-label="Number of guests"
-                        className="bg-transparent text-white placeholder-white focus:outline-none"
+                        className="
+                        min-w-0 
+                        w-full 
+                        bg-transparent 
+                        text-white 
+                        placeholder-white 
+                        focus:outline-none"
                     />
                 </label>
                 <button
                     type="submit"
                     aria-label="Search venues"
-                    className="bg-teal-900 h-[40px] w-[40px] rounded-full flex items-center justify-center"
+                    className="flex 
+                    h-11 
+                    w-full 
+                    items-center 
+                    justify-center
+                    rounded-xl 
+                    bg-teal-900 
+                    text-white
+                    hover:bg-teal-950
+                    ml-2
+                    lg:h-10 
+                    lg:w-10 
+                    lg:shrink-0 
+                    lg:rounded-full"
                 >
-                    <Search size={20} className="text-white" />
+                    <Search size={20} />
+                    <span className="ml-2 lg:hidden">Search venues</span>
                 </button>
             </div>
         </form>

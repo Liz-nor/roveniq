@@ -9,3 +9,7 @@ export const emailSchema = z
   .email()
   .regex(/@stud\.noroff\.no$/, 'Must be a stud.noroff.no email');
 export const passwordSchema = z.string().min(8);
+export const urlSchema = z
+  .string()
+  .url()
+  .regex(/^https?:\/\//, 'Must start with http:// or https://');

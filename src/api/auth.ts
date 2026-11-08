@@ -1,5 +1,5 @@
 import { AUTH_URL } from '../lib/config';
-import type { AuthUser } from '../lib/authStore';
+import type { AuthUser, Media } from '../lib/authStore';
 
 interface LoginResponse {
     data: AuthUser & { accessToken: string };
@@ -14,6 +14,8 @@ export interface RegisterRequest {
     email: string;
     password: string;
     venueManager?: boolean;
+    avatar?: Media;
+    banner?: Media;
 }
 
 interface ApiError {

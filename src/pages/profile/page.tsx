@@ -59,7 +59,7 @@ export default function ProfilePage() {
                         ))}
                 </div>
                 <Link
-                    to="/home"
+                    to="/"
                     aria-label="Back to home"
                     className="ml-8 text-neutral-900 hover:text-teal-600"
                 >

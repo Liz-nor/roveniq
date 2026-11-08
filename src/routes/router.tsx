@@ -25,7 +25,7 @@ const rootRoute = createRootRoute({
 
 const homeRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/home',
+  path: '/',
   component: Home,
 });
 
@@ -33,12 +33,6 @@ const venueRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/venues/$venueId',
   component: VenuePage,
-});
-
-const indexRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/',
-  component: VenuesPage,
 });
 
 const venuesRoute = createRoute({
@@ -76,7 +70,6 @@ const registerRoute = createRoute({
 
 export const router = createRouter({
   routeTree: rootRoute.addChildren([
-    indexRoute,
     homeRoute,
     venueRoute,
     authRoute.addChildren([loginRoute, registerRoute]),
