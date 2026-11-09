@@ -11,13 +11,15 @@ import {
 import { login, register } from '../../api/auth';
 import { useAuthStore } from '../../lib/authStore';
 import { publicImageUrl } from '../../lib/config';
+import {toast} from 'sonner';
 
+// Options for avatar and banner images
 const avatarOptions = [
   { label: 'Default', image: '/images/roveniq-default-avatar.webp' },
   { label: 'Male', image: '/images/roveniq-male-avatar.webp' },
   { label: 'Female', image: '/images/roveniq-female-avatar.webp' },
 ] as const;
-
+// Options for banner images
 const bannerOptions = [
   { label: 'Default', image: '/images/roveniq-default-banner.webp' },
   { label: 'Island', image: '/images/paradise.png' },
@@ -102,7 +104,7 @@ export default function RegisterForm({ active }: { active: boolean }) {
     const name = String(formData.get('name') ?? '');
     const email = String(formData.get('email') ?? '');
     const password = String(formData.get('password') ?? '');
-
+    // Validate name, email, and password */
     if (!nameSchema.safeParse(name).success) {
       setError('Name must be at least 2 characters: letters, numbers and underscores only.');
       return;
@@ -143,9 +145,12 @@ export default function RegisterForm({ active }: { active: boolean }) {
       // Register doesn't return a token, so log in straight after.
       const { user, accessToken } = await login(email, password);
       setAuth(user, accessToken);
+      toast.success('Welcome to roveniq! Your account has been created!');
       navigate({ to: '/profile' });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Registration failed');
+      const message = err instanceof Error ? err.message : 'Registration failed';
+      setError(message);
+      toast.error(message);
     } finally {
       setIsSubmitting(false);
     }
@@ -275,6 +280,7 @@ export default function RegisterForm({ active }: { active: boolean }) {
               previewClassName="aspect-[16/7] w-full rounded object-cover"
             />
           </div>
+          {/* Validate banner image URL */}
           {selectedBanner === CUSTOM_URL && (
             <ValidatedInput
               type="url"

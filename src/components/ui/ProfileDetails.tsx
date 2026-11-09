@@ -6,7 +6,7 @@ interface ProfileDetailsProps {
     email: string;
     onEdit?: () => void;
 }
-
+// News channel type definition for the user's preferred news channels
 type NewsChannel = 'email' | 'text' | 'mail';
 
 const newsChannels: { key: NewsChannel; label: string }[] = [
@@ -14,7 +14,7 @@ const newsChannels: { key: NewsChannel; label: string }[] = [
     { key: 'text', label: 'By Text' },
     { key: 'mail', label: 'By Mail' },
 ];
-
+// Read-only field component for displaying profile information
 function ReadOnlyField({
     id,
     label,
@@ -41,7 +41,7 @@ function ReadOnlyField({
         </div>
     );
 }
-
+// Toggle switch for news channels
 function Toggle({
     label,
     checked,
@@ -107,7 +107,7 @@ export function ProfileDetails({ name, email, onEdit }: ProfileDetailsProps) {
                         type="button"
                         onClick={onEdit}
                         disabled={!onEdit}
-                        className="flex items-center gap-2 rounded-md border border-sage-500 bg-sage-100 px-2 py-0.5 text-xs text-neutral-900 transition-colors hover:bg-sage-200"
+                        className="flex items-center gap-2 rounded-md border border-sage-500 bg-sage-100 px-2 py-0.5 text-xs text-neutral-900 transition-colors hover:bg-sage-200 cursor-pointer"
                     >
                         <SquarePen className="size-4" aria-hidden="true" />
                         Edit

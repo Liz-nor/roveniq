@@ -1,5 +1,3 @@
-import { Link } from '@tanstack/react-router';
-import { House } from 'lucide-react';
 import { useState } from 'react';
 import { ProfileBanner } from '../../components/ui/ProfileBanner.tsx';
 import { ProfileDetails } from '../../components/ui/ProfileDetails.tsx';
@@ -9,6 +7,7 @@ import { useAuthStore } from '../../lib/authStore';
 
 type ProfileTab = 'profile' | 'bookings' | 'venues';
 
+// Tabs for profile sections changing according to the logged-in user's role
 const tabs: { key: ProfileTab; label: string }[] = [
     { key: 'profile', label: 'Profile' },
     { key: 'bookings', label: 'Bookings' },
@@ -33,11 +32,20 @@ export default function ProfilePage() {
                 avatarAlt={profile.avatar?.alt || undefined}
             />
 
-            <div className="relative flex items-center justify-center">
+            <div className="
+            relative 
+            flex 
+            items-center 
+            justify-center">
                 <div
                     role="tablist"
                     aria-label="Profile sections"
-                    className="flex gap-2 rounded-md bg-teal-900 p-1"
+                    className="
+                    flex 
+                    gap-2 
+                    rounded-md 
+                    bg-teal-900 
+                    p-1"
                 >
                     {tabs
                         .filter((tab) => tab.key !== 'venues' || profile.venueManager)
@@ -48,7 +56,16 @@ export default function ProfilePage() {
                                 role="tab"
                                 aria-selected={activeTab === tab.key}
                                 onClick={() => setActiveTab(tab.key)}
-                                className={`w-20 rounded-full py-1.5 font-playfair text-xs text-neutral-900 transition-colors sm:w-24 ${
+                                className={`
+                                    w-20 
+                                    rounded-full 
+                                    py-1.5 
+                                    font-playfair 
+                                    text-xs 
+                                    text-neutral-900 
+                                    transition-colors 
+                                    sm:w-24 
+                                    ${
                                     activeTab === tab.key
                                         ? 'bg-muted-background'
                                         : 'bg-teal-100 hover:bg-muted-background'
@@ -58,13 +75,6 @@ export default function ProfilePage() {
                             </button>
                         ))}
                 </div>
-                <Link
-                    to="/"
-                    aria-label="Back to home"
-                    className="ml-8 text-neutral-900 hover:text-teal-600"
-                >
-                    <House className="size-4" aria-hidden="true" />
-                </Link>
             </div>
 
             <div className="px-0 sm:px-5">
