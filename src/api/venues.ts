@@ -48,3 +48,55 @@ export async function getVenue(id: string): Promise<Venue> {
     const json = await response.json();
     return json.data;
 }
+
+export async function createVenue(venue: Partial<Venue>): Promise<Venue> {
+    const response = await fetch(
+        `${BASE_URL}/venues`,
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(venue)
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error('Failed to create venue');
+    }
+    const json = await response.json();
+    return json.data;
+}
+
+export async function updateVenue(id: string, venue: Partial<Venue>): Promise<Venue> {
+    const response = await fetch(
+        `${BASE_URL}/venues/${id}`,
+        {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(venue)
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error('Failed to update venue');
+    }
+    const json = await response.json();
+    return json.data;
+}
+
+export async function deleteVenue(id: string): Promise<void> {
+    const response = await fetch(
+        `${BASE_URL}/venues/${id}`,
+        {
+            method: 'DELETE'
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error('Failed to delete venue');
+    }
+}
+
