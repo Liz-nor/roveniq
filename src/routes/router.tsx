@@ -65,7 +65,6 @@ const loginRoute = createRoute({
   path: '/login',
 });
 
-
 const registerRoute = createRoute({
   getParentRoute: () => authRoute,
   path: '/register',
