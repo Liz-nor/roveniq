@@ -1,4 +1,5 @@
 import { BASE_URL } from '../lib/config';
+import { authFetch } from '../lib/api';
 
 export interface Venue {
     id: string;
@@ -49,17 +50,14 @@ export async function getVenue(id: string): Promise<Venue> {
     return json.data;
 }
 
-export async function createVenue(venue: Partial<Venue>): Promise<Venue> {
-    const response = await fetch(
-        `${BASE_URL}/venues`,
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(venue)
-        }
-    );
+export async function createVenue(
+    venue: Partial<Venue>,
+    accessToken: string | null,
+): Promise<Venue> {
+    const response = await authFetch('/venues', accessToken, {
+        method: 'POST',
+        body: JSON.stringify(venue),
+    });
 
     if (!response.ok) {
         throw new Error('Failed to create venue');
@@ -68,17 +66,15 @@ export async function createVenue(venue: Partial<Venue>): Promise<Venue> {
     return json.data;
 }
 
-export async function updateVenue(id: string, venue: Partial<Venue>): Promise<Venue> {
-    const response = await fetch(
-        `${BASE_URL}/venues/${id}`,
-        {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(venue)
-        }
-    );
+export async function updateVenue(
+    id: string,
+    venue: Partial<Venue>,
+    accessToken: string | null,
+): Promise<Venue> {
+    const response = await authFetch(`/venues/${id}`, accessToken, {
+        method: 'PUT',
+        body: JSON.stringify(venue),
+    });
 
     if (!response.ok) {
         throw new Error('Failed to update venue');
@@ -87,16 +83,15 @@ export async function updateVenue(id: string, venue: Partial<Venue>): Promise<Ve
     return json.data;
 }
 
-export async function deleteVenue(id: string): Promise<void> {
-    const response = await fetch(
-        `${BASE_URL}/venues/${id}`,
-        {
-            method: 'DELETE'
-        }
-    );
+export async function deleteVenue(
+    id: string,
+    accessToken: string | null,
+): Promise<void> {
+    const response = await authFetch(`/venues/${id}`, accessToken, {
+        method: 'DELETE',
+    });
 
     if (!response.ok) {
         throw new Error('Failed to delete venue');
     }
 }
-

@@ -124,6 +124,10 @@
   --color-button-secondary: var(--color-neutral-500);
   --color-button-secondary-hover: var(--color-neutral-600);
   --color-button-secondary-text: var(--color-neutral-50);
+  --color-button-tertiary: var(--color-terracotta-500);
+  --color-button-tertiary-hover: var(--color-terracotta-400);
+  --color-button-tertiary-text: var(--color-neutral-50);
+  --color-button-tertiary-border: var(--color-terracotta-500);
   --color-text: var(--color-neutral-900);
   --color-button-primary-text: var(--color-neutral-50);
   --color-heading: var(--color-neutral-50);
@@ -161,6 +165,21 @@
 }
 .buttonSecondary:hover {
   background-color: var(--color-button-secondary-hover);
+}
+
+.buttonTertiary {
+  background-color: var(--color-button-tertiary);
+  color: var(--color-button-tertiary-text);
+  border: 1px solid var(--color-button-tertiary-border);
+  padding: 0.5rem 1rem;
+  margin: 0.5rem 0;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.buttonTertiary:hover {
+  background-color: var(--color-button-tertiary-hover);
+  border: 1px solid var(--color-button-tertiary-border);
 }
 
 @layer base {

@@ -5,8 +5,7 @@ import {
   Outlet,
   redirect,
 } from '@tanstack/react-router';
-import {Toaster} from 'sonner';
-
+import { Toaster } from 'sonner';
 import AuthLayout from '../components/layout/AuthLayout';
 import Header from '../components/layout/Header';
 import Home from '../pages/home/page';
