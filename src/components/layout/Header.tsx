@@ -21,9 +21,12 @@ export default function Header() {
   return (
     <header className="w-full bg-muted-background px-4 py-4">
       <nav className="mx-auto flex max-w-6xl items-center justify-between text-sm font-medium text-neutral-700">
-        <a href="/" className="text-xl font-bold text-neutral-900">
-          roveniq<span className="text-terracotta-700 text-4xl">.</span>
-        </a>
+        <img
+          src="/images/Roveniq_logo_files/roveniq-lettering.png"
+          onClick={() => navigate({ to: '/' })}
+          alt="roveniq Logo"
+          className="h-8 w-auto hover:cursor-pointer"
+        />
         {/* Customized hamburger menu button for mobile view */}
         <button
           type="button"

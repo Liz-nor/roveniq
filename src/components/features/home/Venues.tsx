@@ -60,22 +60,22 @@ export function VenueCard({ venue }: { venue: Venue }) {
         </div>
       </div>
       <div className="flex items-center gap-2 mb-2">
-        <MapPin size={20} className="text-accent" />
+        <MapPin size={20} className="text-icon" />
         <p className="text-neutral-700">{formatLocation(venue.location)}</p>
       </div>
       <p className="text-neutral-700 mb-4 line-clamp-2">{venue.description}</p>
       <div className="mt-auto flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <UsersRound size={20} className="text-accent" />
+          <UsersRound size={20} className="text-icon" />
           <p className="text-neutral-700">Guests {venue.maxGuests}</p>
         </div>
         <div className="flex items-center gap-2">
-          {venue.meta.wifi && <Wifi size={20} className="text-accent" />}
-          {venue.meta.pets && <PawPrint size={20} className="text-accent" />}
+          {venue.meta.wifi && <Wifi size={20} className="text-icon" />}
+          {venue.meta.pets && <PawPrint size={20} className="text-icon" />}
           {venue.meta.breakfast && (
-            <Utensils size={20} className="text-accent" />
+            <Utensils size={20} className="text-icon" />
           )}
-          {venue.meta.parking && <Car size={20} className="text-accent" />}
+          {venue.meta.parking && <Car size={20} className="text-icon" />}
         </div>
       </div>
       <div className="flex justify-between items-center mt-4">

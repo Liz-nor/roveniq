@@ -35,9 +35,12 @@ export default function ShowcaseVenues() {
   }
 
   return (
-    <section className="container mx-auto px-4 py-8">
+    <section className="w-full bg-muted-background mx-auto mt-4 px-4 py-8">
+      <p className="mb-4 text-terracotta-800 font-semibold">
+        Discover top-rated stays
+      </p>
       <h2 className="mb-4 text-2xl font-bold text-neutral-900">
-        Top Rated Venues
+        Loved by travelers
       </h2>
 
       <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">

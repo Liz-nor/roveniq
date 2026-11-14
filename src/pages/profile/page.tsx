@@ -4,6 +4,7 @@ import { ProfileDetails } from '../../components/ui/ProfileDetails.tsx';
 import { ProfileVenues } from '../../components/ui/ProfileVenues.tsx';
 import ProfileBookings from '../../components/ui/ProfileBookings.tsx';
 import { useAuthStore } from '../../lib/authStore';
+import { EditProfileModal } from '../../components/features/profile/EditProfileModal.tsx';
 
 type ProfileTab = 'profile' | 'bookings' | 'venues';
 
@@ -16,6 +17,7 @@ const tabs: { key: ProfileTab; label: string }[] = [
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState<ProfileTab>('profile');
+  const [isEditOpen, setIsEditOpen] = useState(false);
   const profile = useAuthStore((state) => state.user);
 
   // The route guard redirects visitors; this covers logging out on this page.
@@ -30,6 +32,11 @@ export default function ProfilePage() {
         bannerAlt={profile.banner?.alt || undefined}
         avatarSrc={profile.avatar?.url}
         avatarAlt={profile.avatar?.alt || undefined}
+        onEdit={() => setIsEditOpen(true)}
+      />
+      <EditProfileModal
+        isOpen={isEditOpen}
+        onClose={() => setIsEditOpen(false)}
       />
 
       <div
@@ -81,7 +88,12 @@ export default function ProfilePage() {
 
       <div className="px-0 sm:px-5">
         {activeTab === 'profile' && (
-          <ProfileDetails name={profile.name} email={profile.email} />
+          <ProfileDetails
+            name={profile.name}
+            email={profile.email}
+            bio={profile.bio ?? ''}
+            onEdit={() => setIsEditOpen(true)}
+          />
         )}
         {activeTab === 'bookings' && <ProfileBookings />}
         {activeTab === 'venues' && <ProfileVenues />}

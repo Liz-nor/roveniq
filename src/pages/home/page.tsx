@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Navigate } from '@tanstack/react-router';
+import { useNavigate } from '@tanstack/react-router';
 import { useAuthStore } from '../../lib/authStore';
 import HeroSection from '../../components/features/home/HeroSection';
 import TopRatedVenue from '../../components/features/home/TopRatedVenue';
@@ -12,6 +12,8 @@ export default function HomePage() {
   const [filters, setFilters] = useState<SearchFilters>(emptyFilters);
   const [isManagerModalOpen, setIsManagerModalOpen] = useState(false);
   const user = useAuthStore((state) => state.user);
+  const navigate = useNavigate();
+
   function handleSearch(next: SearchFilters) {
     setFilters(next);
     document.getElementById('venues')?.scrollIntoView({ behavior: 'smooth' });
@@ -19,7 +21,7 @@ export default function HomePage() {
 
   function handleManagerClick() {
     if (!user) {
-      <Navigate to="/login" />;
+      navigate({ to: '/login' });
       return;
     }
     setIsManagerModalOpen(true);
@@ -30,18 +32,48 @@ export default function HomePage() {
       <TopRatedVenue />
 
       <ShowcaseVenues filters={filters} />
-      {user?.venueManager ? (
-        <button
-          className="buttonTertiary"
-          onClick={() => Navigate({ to: '/profile' })}
-        >
-          Manage my venues
-        </button>
-      ) : (
-        <button className="buttonTertiary" onClick={handleManagerClick}>
-          Become a Venue Manager
-        </button>
-      )}
+      <section className="container mx-auto my-16 px-4">
+        <div className="grid overflow-hidden rounded-2x1 bg-muted-background md:grid-cols-2">
+          {/* Image */}
+          <img
+            src="/images/venueManager.png"
+            alt="A venue manager working on a laptop"
+            className="h-full w-full object-cover"
+          />
+
+          {/* Text content */}
+          <div className="flex flex-col justify-center gap-4 p-8 md:p-12">
+            <p className="text-sm font-semibold text-terracotta-800">
+              HOST WITH ROVENIQ
+            </p>
+
+            <h2 className="text-3xl font-bold text-neutral-900">
+              Your space. New possibilities.
+            </h2>
+
+            <p className="text-neutral-700">
+              Share your property with travelers, manage your listings, and
+              welcome guests from around the world.
+            </p>
+
+            {user?.venueManager ? (
+              <button
+                className="buttonTertiary"
+                onClick={() => navigate({ to: '/profile' })}
+              >
+                Manage my venues
+              </button>
+            ) : (
+              <button
+                className="buttonTertiary mx-auto"
+                onClick={handleManagerClick}
+              >
+                Become a Venue Manager
+              </button>
+            )}
+          </div>
+        </div>
+      </section>
       <BecomeVenueManager
         isOpen={isManagerModalOpen}
         onClose={() => setIsManagerModalOpen(false)}

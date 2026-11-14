@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useParams } from '@tanstack/react-router';
+import type { DateRange } from 'react-day-picker';
+import { BookingCalendar } from '../../components/features/venues/BookingCalendar';
+import { useParams, Link } from '@tanstack/react-router';
 import {
   Star,
   MapPin,
@@ -11,11 +13,13 @@ import {
 } from 'lucide-react';
 import { getVenue, type Venue } from '../../api/venues';
 import VenueGallery from '../../components/features/venues/VenueGallery';
+
 export default function VenuePage() {
   const { venueId } = useParams({ strict: false }) as { venueId: string };
   const [venue, setVenue] = useState<Venue | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [dates, setDates] = useState<DateRange>();
 
   useEffect(() => {
     setIsLoading(true);
@@ -25,6 +29,11 @@ export default function VenuePage() {
       .catch((err: Error) => setError(err.message))
       .finally(() => setIsLoading(false));
   }, [venueId]);
+
+  const handleBooking = () => {
+    if (!venue || !dates?.from || !dates?.to) return;
+    // Booking logic here
+  };
 
   if (isLoading) {
     return (
@@ -98,11 +107,66 @@ export default function VenuePage() {
             </div>
           )}
         </div>
+        <div className="my-8 rounded-xl border border-neutral-200 p-6">
+          <h2 className="mb-2 text-xl font-semibold text-neutral-900">
+            Select your dates
+          </h2>
+
+          <p className="mb-4 text-sm text-neutral-600">
+            Choose your check-in and check-out dates.
+          </p>
+
+          <BookingCalendar
+            bookings={venue.bookings ?? []}
+            onDatesChange={setDates}
+          />
+        </div>
+
+        {venue.owner && (
+          <div className="my-8 rounded-xl border border-neutral-200 p-6">
+            <h2 className="mb-4 text-xl font-semibold text-neutral-900">
+              About the host
+            </h2>
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                {venue.owner.avatar && (
+                  <img
+                    src={venue.owner.avatar.url}
+                    alt={venue.owner.avatar.alt || venue.owner.name}
+                    className="size-16 rounded-full object-cover"
+                  />
+                )}
+                <div>
+                  <p className="font-semibold text-neutral-900">
+                    {venue.owner.name}
+                  </p>
+                  {venue.owner.bio && (
+                    <p className="text-sm text-neutral-600">{venue.owner.bio}</p>
+                  )}
+                </div>
+              </div>
+              <Link
+                to="/profiles/$profileName"
+                params={{ profileName: venue.owner.name }}
+                className="buttonSecondary whitespace-nowrap"
+              >
+                View Profile
+              </Link>
+            </div>
+          </div>
+        )}
+
         <div className="flex justify-between items-center">
           <p className="text-xl font-semibold text-neutral-900">
             ${venue.price} / night
           </p>
-          <button className="buttonPrimary">Book Now</button>
+          <button
+            disabled={!dates?.from || !dates?.to}
+            onClick={handleBooking}
+            className="buttonPrimary"
+          >
+            Book Now
+          </button>
         </div>
       </div>
     </section>

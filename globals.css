@@ -138,6 +138,7 @@
   --color-success: var(--color-success-text);
   --color-warning: var(--color-warning-text);
   --color-info: var(--color-info-text);
+  --color-icon: var(--color-terracotta-600);
 }
 
 .buttonPrimary {

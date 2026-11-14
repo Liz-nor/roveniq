@@ -9,6 +9,7 @@ interface Props {
 }
 
 export function BecomeVenueManager({ isOpen, onClose }: Props) {
+  // Reference to the dialog element for controlling its open/close state
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -76,19 +77,19 @@ export function BecomeVenueManager({ isOpen, onClose }: Props) {
 
       <ul className="mt-4 space-y-2">
         <li className="flex items-center gap-2">
-          <Wallet className="h-5 w-5 text-neutral-800" />
+          <Wallet className="h-5 w-5 text-teal-700" />
           Secure payments for your bookings
         </li>
         <li className="flex items-center gap-2">
-          <House className="h-5 w-5 text-neutral-800" />
+          <House className="h-5 w-5 text-teal-700" />
           Manage your venues easily
         </li>
         <li className="flex items-center gap-2">
-          <CalendarCheck className="h-5 w-5 text-neutral-800" />
+          <CalendarCheck className="h-5 w-5 text-teal-700" />
           Keep track of your bookings
         </li>
         <li className="flex items-center gap-2">
-          <Pencil className="h-5 w-5 text-neutral-800" />
+          <Pencil className="h-5 w-5 text-teal-700" />
           Edit your venue details anytime
         </li>
       </ul>
