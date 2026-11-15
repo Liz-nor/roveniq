@@ -50,7 +50,7 @@ export async function getVenues(): Promise<Venue[]> {
 }
 
 export async function getVenue(id: string): Promise<Venue> {
-  const response = await fetch(`${BASE_URL}/venues/${id}?_owner=true`);
+  const response = await fetch(`${BASE_URL}/venues/${id}?_owner=true&_bookings=true`);
 
   if (!response.ok) {
     throw new Error('Failed to fetch venue');

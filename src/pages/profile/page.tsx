@@ -3,15 +3,17 @@ import { ProfileBanner } from '../../components/ui/ProfileBanner.tsx';
 import { ProfileDetails } from '../../components/ui/ProfileDetails.tsx';
 import { ProfileVenues } from '../../components/ui/ProfileVenues.tsx';
 import ProfileBookings from '../../components/ui/ProfileBookings.tsx';
+import ProfileFavorites from '../../components/ui/ProfileFavorites.tsx';
 import { useAuthStore } from '../../lib/authStore';
 import { EditProfileModal } from '../../components/features/profile/EditProfileModal.tsx';
 
-type ProfileTab = 'profile' | 'bookings' | 'venues';
+type ProfileTab = 'profile' | 'bookings' | 'favorites' | 'venues';
 
 // Tabs for profile sections changing according to the logged-in user's role
 const tabs: { key: ProfileTab; label: string }[] = [
   { key: 'profile', label: 'Profile' },
   { key: 'bookings', label: 'Bookings' },
+  { key: 'favorites', label: 'Favourites' },
   { key: 'venues', label: 'My Venues' },
 ];
 
@@ -96,6 +98,7 @@ export default function ProfilePage() {
           />
         )}
         {activeTab === 'bookings' && <ProfileBookings />}
+        {activeTab === 'favorites' && <ProfileFavorites />}
         {activeTab === 'venues' && <ProfileVenues />}
       </div>
     </main>

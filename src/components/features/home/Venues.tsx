@@ -17,6 +17,7 @@ import {
   type SearchFilters,
 } from '../../../lib/venueFilters';
 import Pagination from '../../ui/Pagination';
+import { useFavoritesStore } from '../../../store/favoritesStore';
 
 const VENUES_PER_PAGE = 11;
 
@@ -27,6 +28,13 @@ function formatLocation(location: Venue['location']) {
 
 export function VenueCard({ venue }: { venue: Venue }) {
   const image = venue.media[0];
+  const isFavorite = useFavoritesStore((state) =>
+  state.favorites.includes(venue.id)
+);
+
+const toggleFavorite = useFavoritesStore(
+  (state) => state.toggleFavorite
+);
 
   return (
     <div className="bg-white p-4 shadow rounded relative flex flex-col h-full">
@@ -38,10 +46,23 @@ export function VenueCard({ venue }: { venue: Venue }) {
       />
       <button
         type="button"
-        aria-label="Save to favourites"
+        onClick={(e) => {
+          e.stopPropagation();
+          toggleFavorite(venue.id);
+        }}
+        aria-label={
+          isFavorite ? 'Remove from favourites' : 'Save to favourites'
+        }
+        aria-pressed={isFavorite}
         className="absolute top-6 right-6 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow"
       >
-        <Heart size={20} className="text-black" />
+        <Heart
+          size={20}
+          aria-hidden="true"
+          className={
+            isFavorite ? 'fill-red-500 text-red-500' : 'text-neutral-700'
+          }
+        />
       </button>
       <div className="flex justify-between items-center mb-2">
         <h3 className="text-xl font-bold text-neutral-900 truncate">

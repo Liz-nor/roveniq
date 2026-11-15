@@ -4,6 +4,7 @@ import { useVenueModal } from '../../hooks/useVenueModal';
 import { VenueCard } from '../features/home/Venues';
 import { VenueModal } from '../features/venues/VenueModal';
 import { PlusIcon } from 'lucide-react';
+
 export function ProfileVenues() {
   const { items: venues, isLoading, error } = useProfileData(getProfileVenues);
   const { isModalOpen, openModal, closeModal, editingVenue, handleSaveVenue } =
@@ -16,10 +17,12 @@ export function ProfileVenues() {
   return (
     <div className="flex flex-col gap-6">
       <button
+        type="button"
         onClick={() => openModal()}
-        className="rounded bg-button-tertiary flex items-center justify-center"
+        className="buttonTertiary my-0 flex items-center gap-2 self-end"
       >
-        <PlusIcon className="inline-block w-4 h-4 mr-2" />
+        <PlusIcon className="size-4" aria-hidden="true" />
+        Add venue
       </button>
 
       <VenueModal
