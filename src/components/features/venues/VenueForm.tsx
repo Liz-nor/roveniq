@@ -15,7 +15,7 @@ const amenities = [
 
 const fieldClass =
   'w-full rounded-lg border border-neutral-300 p-3 text-text focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30';
-
+// A reusable form field component with a label and children.
 function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
     <label className="flex flex-col gap-1 text-sm text-neutral-900">
@@ -134,7 +134,7 @@ export function VenueForm({
 
   return (
     <form
-      className="flex flex-col gap-4 rounded-lg bg-muted-background p-4"
+      className="flex flex-col gap-4 rounded-lg p-4"
       onSubmit={handleSubmit}
       noValidate
     >

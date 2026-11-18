@@ -6,9 +6,20 @@ import { VenueModal } from '../features/venues/VenueModal';
 import { PlusIcon } from 'lucide-react';
 
 export function ProfileVenues() {
-  const { items: venues, isLoading, error } = useProfileData(getProfileVenues);
-  const { isModalOpen, openModal, closeModal, editingVenue, handleSaveVenue } =
-    useVenueModal();
+  const {
+    items: venues,
+    isLoading,
+    error,
+    reload,
+  } = useProfileData(getProfileVenues);
+  const {
+    isModalOpen,
+    openModal,
+    closeModal,
+    editingVenue,
+    handleSaveVenue,
+    handleDeleteVenue,
+  } = useVenueModal(reload);
 
   if (isLoading)
     return <p className="text-neutral-700">Loading your venues...</p>;
@@ -30,6 +41,7 @@ export function ProfileVenues() {
         venue={editingVenue}
         onClose={closeModal}
         onSubmit={handleSaveVenue}
+        onDelete={handleDeleteVenue}
       />
 
       {venues.length === 0 ? (
@@ -37,7 +49,12 @@ export function ProfileVenues() {
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           {venues.map((venue) => (
-            <VenueCard key={venue.id} venue={venue} />
+            <VenueCard
+              key={venue.id}
+              venue={venue}
+              hideFavorite
+              onEdit={() => openModal(venue)}
+            />
           ))}
         </div>
       )}

@@ -18,6 +18,8 @@ import {
 } from '../../../lib/venueFilters';
 import Pagination from '../../ui/Pagination';
 import { useFavoritesStore } from '../../../store/favoritesStore';
+import { useAuthStore } from '../../../lib/authStore';
+import { useVenueModal } from '../../../hooks/useVenueModal';
 
 const VENUES_PER_PAGE = 11;
 
@@ -26,16 +28,24 @@ function formatLocation(location: Venue['location']) {
   return parts.length > 0 ? parts.join(', ') : 'Location not specified';
 }
 
-export function VenueCard({ venue }: { venue: Venue }) {
+export function VenueCard({
+  venue,
+  hideFavorite,
+  onEdit,
+}: {
+  venue: Venue;
+  hideFavorite?: boolean;
+  onEdit?: () => void;
+}) {
   const image = venue.media[0];
   const isFavorite = useFavoritesStore((state) =>
-  state.favorites.includes(venue.id)
-);
+    state.favorites.includes(venue.id),
+  );
 
-const toggleFavorite = useFavoritesStore(
-  (state) => state.toggleFavorite
-);
-
+  const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
+  const currentUserName = useAuthStore((state) => state.user?.name);
+  const isOwnVenue =
+    Boolean(currentUserName) && venue.owner?.name === currentUserName;
   return (
     <div className="bg-white p-4 shadow rounded relative flex flex-col h-full">
       <img
@@ -44,26 +54,29 @@ const toggleFavorite = useFavoritesStore(
         className="w-full h-48 object-cover rounded mb-4"
         onClick={() => (window.location.href = `/venues/${venue.id}`)}
       />
-      <button
-        type="button"
-        onClick={(e) => {
-          e.stopPropagation();
-          toggleFavorite(venue.id);
-        }}
-        aria-label={
-          isFavorite ? 'Remove from favourites' : 'Save to favourites'
-        }
-        aria-pressed={isFavorite}
-        className="absolute top-6 right-6 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow"
-      >
-        <Heart
-          size={20}
-          aria-hidden="true"
-          className={
-            isFavorite ? 'fill-red-500 text-red-500' : 'text-neutral-700'
+      {/* Favorite button is hidden for own venues or when hideFavorite is true */}
+      {!hideFavorite && !isOwnVenue && (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleFavorite(venue.id);
+          }}
+          aria-label={
+            isFavorite ? 'Remove from favourites' : 'Save to favourites'
           }
-        />
-      </button>
+          aria-pressed={isFavorite}
+          className="absolute top-6 right-6 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow"
+        >
+          <Heart
+            size={20}
+            aria-hidden="true"
+            className={
+              isFavorite ? 'fill-red-500 text-red-500' : 'text-neutral-700'
+            }
+          />
+        </button>
+      )}
       <div className="flex justify-between items-center mb-2">
         <h3 className="text-xl font-bold text-neutral-900 truncate">
           {/* Stretched link: the ::after overlay makes the whole card clickable */}
@@ -93,9 +106,7 @@ const toggleFavorite = useFavoritesStore(
         <div className="flex items-center gap-2">
           {venue.meta.wifi && <Wifi size={20} className="text-icon" />}
           {venue.meta.pets && <PawPrint size={20} className="text-icon" />}
-          {venue.meta.breakfast && (
-            <Utensils size={20} className="text-icon" />
-          )}
+          {venue.meta.breakfast && <Utensils size={20} className="text-icon" />}
           {venue.meta.parking && <Car size={20} className="text-icon" />}
         </div>
       </div>
@@ -103,23 +114,34 @@ const toggleFavorite = useFavoritesStore(
         <p className="text-lg font-semibold text-neutral-900">
           ${venue.price} / night
         </p>
-        <Link
-          to="/venues/$venueId"
-          params={{ venueId: venue.id }}
-          className="buttonPrimary relative z-10 whitespace-nowrap shrink-0"
-        >
-          Book Now
-        </Link>
+        {onEdit ? (
+          <button
+            type="button"
+            onClick={onEdit}
+            className="buttonPrimary relative z-10 whitespace-nowrap shrink-0"
+          >
+            Edit Venue
+          </button>
+        ) : (
+          <Link
+            to="/venues/$venueId"
+            params={{ venueId: venue.id }}
+            className="buttonPrimary relative z-10 whitespace-nowrap shrink-0"
+          >
+            Book Now
+          </Link>
+        )}
       </div>
     </div>
   );
 }
-
+// ShowcaseVenues component displays a list of venues with search and pagination functionality.
 export default function ShowcaseVenues({
   filters,
 }: {
   filters: SearchFilters;
 }) {
+  const { openModal } = useVenueModal();
   const [venues, setVenues] = useState<Venue[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -169,7 +191,12 @@ export default function ShowcaseVenues({
         )}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {shownVenues.map((venue) => (
-            <VenueCard key={venue.id} venue={venue} />
+            <VenueCard
+              key={venue.id}
+              venue={venue}
+              hideFavorite
+              onEdit={() => openModal(venue)}
+            />
           ))}
         </div>
         <Pagination

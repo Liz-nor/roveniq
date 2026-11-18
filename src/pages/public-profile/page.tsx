@@ -33,9 +33,7 @@ export default function PublicProfilePage() {
           setVenues(venuesData);
         }
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : 'Failed to load profile',
-        );
+        setError(err instanceof Error ? err.message : 'Failed to load profile');
       } finally {
         setIsLoading(false);
       }
@@ -80,9 +78,7 @@ export default function PublicProfilePage() {
                 {profile.venueManager ? 'Venue Manager' : 'Guest'}
               </span>
             </div>
-            {profile.bio && (
-              <p className="text-neutral-700">{profile.bio}</p>
-            )}
+            {profile.bio && <p className="text-neutral-700">{profile.bio}</p>}
           </div>
         </div>
       </div>
@@ -103,7 +99,7 @@ export default function PublicProfilePage() {
       {profile.venueManager && venues.length === 0 && (
         <div className="py-12 text-center">
           <p className="text-neutral-700">
-            This venue manager hasn't listed any venues yet.
+            Hmm, it seems this venue manager has not listed anything yet.
           </p>
         </div>
       )}

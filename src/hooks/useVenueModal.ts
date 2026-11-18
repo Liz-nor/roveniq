@@ -1,9 +1,16 @@
 import { useState } from 'react';
-import { updateVenue, createVenue, type Venue } from '../api/venues';
+import {
+  updateVenue,
+  createVenue,
+  deleteVenue,
+  type Venue,
+} from '../api/venues';
 import type { VenueInput } from '../components/features/venues/VenueForm';
 import { useAuthStore } from '../lib/authStore';
 
-export function useVenueModal() {
+// onChange runs after a venue is created, updated or deleted,
+// so the caller can refresh its list.
+export function useVenueModal(onChange?: () => void) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingVenue, setEditingVenue] = useState<Venue | undefined>();
   const accessToken = useAuthStore((state) => state.accessToken);
@@ -19,17 +26,20 @@ export function useVenueModal() {
   }
 
   async function handleSaveVenue(input: VenueInput) {
-    // TODO: Implement venue save logic (API call)
-    console.log('Saving venue:', input);
     if (editingVenue) {
-      console.log('Editing existing venue');
       await updateVenue(editingVenue.id, input, accessToken);
     } else {
-      console.log('Creating new venue');
       await createVenue(input, accessToken);
     }
-    console.log('Venue saved successfully');
     closeModal();
+    onChange?.();
+  }
+
+  async function handleDeleteVenue(): Promise<void> {
+    if (!editingVenue) return;
+    await deleteVenue(editingVenue.id, accessToken);
+    closeModal();
+    onChange?.();
   }
 
   return {
@@ -38,5 +48,6 @@ export function useVenueModal() {
     closeModal,
     editingVenue,
     handleSaveVenue,
+    handleDeleteVenue,
   };
 }

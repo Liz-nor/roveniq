@@ -48,9 +48,11 @@ export async function getVenues(): Promise<Venue[]> {
   const json = await response.json();
   return json.data;
 }
-
+// Fetch a single venue by ID, including owner and bookings information
 export async function getVenue(id: string): Promise<Venue> {
-  const response = await fetch(`${BASE_URL}/venues/${id}?_owner=true&_bookings=true`);
+  const response = await fetch(
+    `${BASE_URL}/venues/${id}?_owner=true&_bookings=true`,
+  );
 
   if (!response.ok) {
     throw new Error('Failed to fetch venue');
@@ -58,8 +60,10 @@ export async function getVenue(id: string): Promise<Venue> {
   const json = await response.json();
   return json.data;
 }
-
-export async function getVenueBookings(id: string): Promise<Venue> {
+// Fetch bookings for a single venue by ID
+export async function getVenueBookings(
+  id: string,
+): Promise<{ bookings: Venue['bookings'] }> {
   const response = await fetch(
     `${BASE_URL}/venues/${encodeURIComponent(id)}?_bookings=true`,
   );
@@ -70,6 +74,8 @@ export async function getVenueBookings(id: string): Promise<Venue> {
   const json = await response.json();
   return json.data;
 }
+// Create a new venue
+// Requires an access token for authentication
 export async function createVenue(
   venue: Partial<Venue>,
   accessToken: string | null,
@@ -85,7 +91,8 @@ export async function createVenue(
   const json = await response.json();
   return json.data;
 }
-
+// Update an existing venue
+// Requires an access token for authentication
 export async function updateVenue(
   id: string,
   venue: Partial<Venue>,
@@ -103,6 +110,8 @@ export async function updateVenue(
   return json.data;
 }
 
+// Delete an existing venue
+// Requires an access token for authentication
 export async function deleteVenue(
   id: string,
   accessToken: string | null,

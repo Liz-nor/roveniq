@@ -36,7 +36,7 @@ export default function HomePage() {
         <div className="grid overflow-hidden rounded-2x1 bg-muted-background md:grid-cols-2">
           {/* Image */}
           <img
-            src="/images/venueManager.png"
+            src="/images/mark-olsen-unsplash.jpg"
             alt="A venue manager working on a laptop"
             className="h-full w-full object-cover"
           />
