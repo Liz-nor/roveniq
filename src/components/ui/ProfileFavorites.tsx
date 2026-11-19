@@ -5,6 +5,7 @@ import { VenueCard } from '../features/home/Venues';
 
 export default function ProfileFavorites() {
   const favoriteIds = useFavoritesStore((state) => state.favorites);
+
   // Venues fetched so far, and ids that failed to load (e.g. deleted venues)
   const [venues, setVenues] = useState<Venue[]>([]);
   const [failedIds, setFailedIds] = useState<string[]>([]);
@@ -14,11 +15,11 @@ export default function ProfileFavorites() {
   );
   const pendingKey = pendingIds.join(',');
 
+  // Fetch venues for pending IDs when pendingKey changes
   useEffect(() => {
     if (!pendingKey) return;
     let cancelled = false;
     const ids = pendingKey.split(',');
-
     Promise.allSettled(ids.map((id) => getVenue(id))).then((results) => {
       if (cancelled) return;
       const loaded: Venue[] = [];

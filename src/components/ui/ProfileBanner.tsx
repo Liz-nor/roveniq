@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Avatar } from './Avatar';
-import { SquarePen, Camera } from 'lucide-react';
+import { SquarePen } from 'lucide-react';
 import { useAuthStore } from '../../lib/authStore';
 import { BecomeVenueManager } from '../features/home/BecomeVenueManager';
 interface ProfileBannerProps {
@@ -31,10 +31,6 @@ export function ProfileBanner({
         src={bannerSrc || '/images/roveniq-default-banner.webp'}
         alt={bannerAlt}
         className="h-28 w-full object-cover sm:h-36"
-      />
-      <Camera
-        className="absolute right-2 top-2 size-4 text-teal-600 bg-sage-100"
-        aria-hidden="true"
       />
       {/* Avatar overlaps the bottom edge of the banner */}
       <div className="flex items-end gap-6 px-2 sm:px-4">

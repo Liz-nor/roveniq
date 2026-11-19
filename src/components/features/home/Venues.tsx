@@ -19,7 +19,6 @@ import {
 import Pagination from '../../ui/Pagination';
 import { useFavoritesStore } from '../../../store/favoritesStore';
 import { useAuthStore } from '../../../lib/authStore';
-import { useVenueModal } from '../../../hooks/useVenueModal';
 
 const VENUES_PER_PAGE = 11;
 
@@ -141,7 +140,6 @@ export default function ShowcaseVenues({
 }: {
   filters: SearchFilters;
 }) {
-  const { openModal } = useVenueModal();
   const [venues, setVenues] = useState<Venue[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -191,12 +189,7 @@ export default function ShowcaseVenues({
         )}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {shownVenues.map((venue) => (
-            <VenueCard
-              key={venue.id}
-              venue={venue}
-              hideFavorite
-              onEdit={() => openModal(venue)}
-            />
+            <VenueCard key={venue.id} venue={venue} />
           ))}
         </div>
         <Pagination

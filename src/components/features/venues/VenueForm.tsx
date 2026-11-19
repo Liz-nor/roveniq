@@ -1,20 +1,26 @@
-import { useState, type FormEvent, type ReactNode } from 'react';
-import { LoaderCircle } from 'lucide-react';
-import type { Venue } from '../../../api/venues';
-import { urlSchema } from '../../../lib/validation';
+import { useState, type FormEvent, type ReactNode } from "react";
+import { LoaderCircle } from "lucide-react";
+import type { Venue } from "../../../api/venues";
+import { urlSchema } from "../../../lib/validation";
+import {
+  DRAFT_FIELD_NAME,
+  MAX_IMAGES,
+  VenueImagesInput,
+  type VenueImage,
+} from "./VenueImagesInput";
 
 const MAX_PRICE = 10000;
 const MAX_GUESTS = 100;
 
 const amenities = [
-  { key: 'wifi', label: 'Wifi' },
-  { key: 'parking', label: 'Parking' },
-  { key: 'breakfast', label: 'Breakfast' },
-  { key: 'pets', label: 'Pets allowed' },
+  { key: "wifi", label: "Wifi" },
+  { key: "parking", label: "Parking" },
+  { key: "breakfast", label: "Breakfast" },
+  { key: "pets", label: "Pets allowed" },
 ] as const;
 
 const fieldClass =
-  'w-full rounded-lg border border-neutral-300 p-3 text-text focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30';
+  "w-full rounded-lg border border-neutral-300 p-3 text-text focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30";
 // A reusable form field component with a label and children.
 function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -27,15 +33,15 @@ function Field({ label, children }: { label: string; children: ReactNode }) {
 
 export type VenueInput = Pick<
   Venue,
-  | 'id'
-  | 'name'
-  | 'description'
-  | 'price'
-  | 'maxGuests'
-  | 'rating'
-  | 'media'
-  | 'meta'
-  | 'location'
+  | "id"
+  | "name"
+  | "description"
+  | "price"
+  | "maxGuests"
+  | "rating"
+  | "media"
+  | "meta"
+  | "location"
 >;
 
 export function VenueForm({
@@ -49,27 +55,34 @@ export function VenueForm({
 }) {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [images, setImages] = useState<VenueImage[]>(
+    () => venue?.media.map(({ url, alt }) => ({ url, alt: alt ?? "" })) ?? [],
+  );
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const text = (key: string) => String(formData.get(key) ?? '').trim();
+    const text = (key: string) => String(formData.get(key) ?? "").trim();
 
-    const name = text('name');
-    const description = text('description');
-    const price = Number(text('price'));
-    const maxGuests = Number(text('maxGuests'));
-    const urls = text('media')
-      .split('\n')
-      .map((url) => url.trim())
-      .filter(Boolean);
+    const name = text("name");
+    const description = text("description");
+    const price = Number(text("price"));
+    const maxGuests = Number(text("maxGuests"));
+    // A URL typed into the image field but not added yet still counts
+    const draftUrl = text(DRAFT_FIELD_NAME);
+    const media =
+      draftUrl &&
+      images.length < MAX_IMAGES &&
+      !images.some((image) => image.url === draftUrl)
+        ? [...images, { url: draftUrl, alt: "" }]
+        : images;
 
     if (!name || !description) {
-      setError('Please enter a name and a description.');
+      setError("Please enter a name and a description.");
       return;
     }
     if (
-      !text('price') ||
+      !text("price") ||
       !Number.isFinite(price) ||
       price < 0 ||
       price > MAX_PRICE
@@ -87,9 +100,9 @@ export function VenueForm({
       );
       return;
     }
-    if (urls.some((url) => !urlSchema.safeParse(url).success)) {
+    if (media.some(({ url }) => !urlSchema.safeParse(url).success)) {
       setError(
-        'Each image must be a valid URL, starting with http:// or https://.',
+        "Each image must be a valid URL, starting with http:// or https://.",
       );
       return;
     }
@@ -98,35 +111,32 @@ export function VenueForm({
     setIsSubmitting(true);
     try {
       await onSubmit({
-        id: venue?.id || '',
+        id: venue?.id || "",
         name,
         description,
         price,
         maxGuests,
         rating: venue?.rating || 0,
-        // Keep the alt text of images that were already on the venue.
-        media: urls.map((url) => ({
-          url,
-          alt: venue?.media.find((image) => image.url === url)?.alt || name,
-        })),
+        // Fall back to the venue name when no alt text was written
+        media: media.map(({ url, alt }) => ({ url, alt: alt.trim() || name })),
         meta: {
-          wifi: formData.has('wifi'),
-          parking: formData.has('parking'),
-          breakfast: formData.has('breakfast'),
-          pets: formData.has('pets'),
+          wifi: formData.has("wifi"),
+          parking: formData.has("parking"),
+          breakfast: formData.has("breakfast"),
+          pets: formData.has("pets"),
         },
         location: {
-          address: text('address'),
-          city: text('city'),
-          zip: text('zip'),
-          country: text('country'),
-          continent: text('continent'),
-          lat: Number(text('lat')),
-          lng: Number(text('lng')),
+          address: text("address"),
+          city: text("city"),
+          zip: text("zip"),
+          country: text("country"),
+          continent: text("continent"),
+          lat: Number(text("lat")),
+          lng: Number(text("lng")),
         },
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not save the venue');
+      setError(err instanceof Error ? err.message : "Could not save the venue");
     } finally {
       setIsSubmitting(false);
     }
@@ -139,7 +149,7 @@ export function VenueForm({
       noValidate
     >
       <h3 className="text-lg text-neutral-900">
-        {venue ? 'Edit venue' : 'New venue'}
+        {venue ? "Edit venue" : "New venue"}
       </h3>
       <Field label="Name">
         <input name="name" defaultValue={venue?.name} className={fieldClass} />
@@ -152,15 +162,7 @@ export function VenueForm({
           className={fieldClass}
         />
       </Field>
-      <Field label="Image URLs (one per line)">
-        <textarea
-          name="media"
-          rows={3}
-          defaultValue={venue?.media.map((image) => image.url).join('\n')}
-          placeholder="https://example.com/venue.jpg"
-          className={fieldClass}
-        />
-      </Field>
+      <VenueImagesInput images={images} onChange={setImages} />
       <div className="grid grid-cols-2 gap-4">
         <Field label="Price per night">
           <input
@@ -185,28 +187,28 @@ export function VenueForm({
         <Field label="Address">
           <input
             name="address"
-            defaultValue={venue?.location.address ?? ''}
+            defaultValue={venue?.location.address ?? ""}
             className={fieldClass}
           />
         </Field>
         <Field label="City">
           <input
             name="city"
-            defaultValue={venue?.location.city ?? ''}
+            defaultValue={venue?.location.city ?? ""}
             className={fieldClass}
           />
         </Field>
         <Field label="Zip code">
           <input
             name="zip"
-            defaultValue={venue?.location.zip ?? ''}
+            defaultValue={venue?.location.zip ?? ""}
             className={fieldClass}
           />
         </Field>
         <Field label="Country">
           <input
             name="country"
-            defaultValue={venue?.location.country ?? ''}
+            defaultValue={venue?.location.country ?? ""}
             className={fieldClass}
           />
         </Field>
@@ -255,7 +257,7 @@ export function VenueForm({
           {isSubmitting && (
             <LoaderCircle className="size-5 animate-spin" aria-hidden="true" />
           )}
-          {venue ? 'Save changes' : 'Create venue'}
+          {venue ? "Save changes" : "Create venue"}
         </button>
       </div>
     </form>

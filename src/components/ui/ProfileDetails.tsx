@@ -1,5 +1,6 @@
 import { CircleUserRound, Newspaper, SquarePen } from 'lucide-react';
 import { useState } from 'react';
+import { BookingFaq } from './FAQ';
 
 interface ProfileDetailsProps {
   name: string;
@@ -37,7 +38,7 @@ function ReadOnlyField({
         type={type}
         value={value}
         readOnly
-        className="w-full max-w-md rounded-md bg-neutral-200 px-2 py-1.5 text-xs text-neutral-900"
+        className="w-full max-w-md rounded-md bg-neutral-50 px-2 py-1.5 text-xs text-neutral-900"
       />
     </div>
   );
@@ -127,7 +128,7 @@ export function ProfileDetails({
             <Newspaper className="size-5" aria-hidden="true" />
             News
           </h3>
-          <p className="pl-6 font-playfair text-xs text-neutral-900">
+          <p className="pl-6 pt-2 text-xs text-neutral-900">
             Choose how you want to receive messages
           </p>
         </div>
@@ -142,6 +143,7 @@ export function ProfileDetails({
           />
         ))}
       </section>
+      <BookingFaq />
     </div>
   );
 }
